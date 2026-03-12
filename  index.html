@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Practice Framework — Design Options</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+
+/* ══════════════════════════════════════
+   INTRO BANNER
+══════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Barlow', sans-serif;
+  background: #1a2438;
+  -webkit-font-smoothing: antialiased;
+}
+
+.intro {
+  background: #1a2438;
+  padding: 64px 32px 60px;
+  text-align: center;
+}
+
+.intro-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: #5a6e8a;
+  margin-bottom: 20px;
+}
+
+.intro-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #ffffff;
+  letter-spacing: .01em;
+  line-height: 1.05;
+  margin-bottom: 16px;
+}
+
+.intro-sub {
+  font-size: 15px;
+  font-weight: 300;
+  font-style: italic;
+  color: #8a9ab5;
+  margin-bottom: 48px;
+  line-height: 1.7;
+}
+
+.option-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.tab-link {
+  display: inline-block;
+  padding: 11px 28px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background .2s, color .2s;
+}
+
+.tab-link.a {
+  background: #ffffff;
+  color: #1a2438;
+}
+
+.tab-link.a:hover { background: #e8ecf2; }
+
+.tab-link.b {
+  background: transparent;
+  color: #8a9ab5;
+  border: 1px solid #2a3d5a;
+}
+
+.tab-link.b:hover { border-color: #ffffff; color: #ffffff; }
+
+.tab-link.c {
+  background: transparent;
+  color: #7aa4d8;
+  border: 1px solid #2a4060;
+}
+.tab-link.c:hover { border-color: #7aa4d8; color: #c8d8f0; }
+
+.tab-link.d {
+  background: transparent;
+  color: #a0b8a0;
+  border: 1px solid #2a4040;
+}
+.tab-link.d:hover { border-color: #a0b8a0; color: #c8e0c8; }
+
+.tab-link.e {
+  background: transparent;
+  color: #b8a0c8;
+  border: 1px solid #40304a;
+}
+.tab-link.e:hover { border-color: #b8a0c8; color: #d8c8e8; }
+
+/* ══════════════════════════════════════
+   OPTION LABELS
+══════════════════════════════════════ */
+.option-header {
+  background: #1a2438;
+  padding: 40px 32px 0;
+  text-align: center;
+}
+
+.option-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: #2c3e5c;
+  border: 1px solid #3a5070;
+  padding: 6px 20px;
+  border-radius: 3px;
+  margin-bottom: 16px;
+}
+
+.option-desc {
+  font-size: 14px;
+  font-weight: 300;
+  font-style: italic;
+  color: #6a7e9a;
+  max-width: 500px;
+  margin: 0 auto 0;
+  line-height: 1.7;
+}
+
+.divider-line {
+  height: 1px;
+  background: #2a3d5a;
+  margin: 40px 0 0;
+}
+
+
+/* ══════════════════════════════════════
+   OPTION A — V3 styles (scoped)
+══════════════════════════════════════ */
+#option-a {
+  --bg: #f4f5f7;
+  --card-bg: #ffffff;
+  --card-border: #dde1e8;
+  --card-hover: #eef1f6;
+  --text-primary: #1a2438;
+  --text-secondary: #4a5568;
+  --text-label: #8a96aa;
+  --tag-bg: #eef0f5;
+  --tag-text: #6a7a96;
+  background: var(--bg);
+}
+
+#option-a .section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 96px 32px 112px;
+}
+
+#option-a .eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-label);
+  margin-bottom: 16px;
+}
+
+#option-a .headline {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(32px, 5vw, 54px);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+  color: var(--text-primary);
+  max-width: 620px;
+  margin-bottom: 10px;
+}
+
+#option-a .subheadline {
+  font-size: 15px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+#option-a .divider {
+  width: 36px;
+  height: 2px;
+  background: rgba(26,36,56,0.2);
+  margin-bottom: 64px;
+}
+
+#option-a .timeline-wrap {
+  position: relative;
+  width: 100%;
+}
+
+#option-a .timeline-svg {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+#option-a .steps {
+  display: flex;
+  flex-direction: column;
+}
+
+#option-a .step {
+  display: flex;
+  align-items: center;
+  min-height: 160px;
+  position: relative;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+#option-a .step.visible { opacity: 1; transform: translateY(0); }
+#option-a .step:nth-child(1) { transition-delay: 0.08s; }
+#option-a .step:nth-child(2) { transition-delay: 0.22s; }
+#option-a .step:nth-child(3) { transition-delay: 0.36s; }
+#option-a .step:nth-child(4) { transition-delay: 0.50s; }
+
+#option-a .step.left  { justify-content: flex-start; padding-right: 52%; }
+#option-a .step.right { justify-content: flex-end;   padding-left:  52%; }
+
+#option-a .card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  padding: 24px 28px;
+  width: 100%;
+  max-width: 340px;
+  box-shadow: 0 2px 12px rgba(26,36,56,0.06);
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s, background 0.25s;
+  cursor: default;
+}
+
+#option-a .card:hover {
+  border-color: #b0bac8;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 24px rgba(26,36,56,0.1);
+}
+
+#option-a .card-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-label);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+#option-a .tag {
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  border: 1px solid var(--card-border);
+  border-radius: 3px;
+  padding: 2px 7px;
+  font-size: 9px;
+  letter-spacing: 0.07em;
+}
+
+#option-a .card-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--text-primary);
+  line-height: 1.15;
+  margin-bottom: 7px;
+}
+
+#option-a .card-desc {
+  font-size: 13.5px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+#option-a .num {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-label);
+  z-index: 3;
+  box-shadow: 0 2px 8px rgba(26,36,56,0.08);
+  cursor: pointer;
+  transition: border-color 0.25s, color 0.25s, background 0.25s, box-shadow 0.25s, transform 0.25s;
+}
+
+#option-a .num.num-active {
+  background: #1a2438; border-color: #1a2438; color: #fff;
+  box-shadow: 0 4px 16px rgba(26,36,56,0.22);
+  transform: translate(-50%, -50%) scale(1.12);
+}
+
+#option-a .step.card-active .card {
+  border-color: #1a2438;
+  box-shadow: 0 8px 32px rgba(26,36,56,0.13);
+  transform: translateY(-4px);
+}
+
+#option-a .step.card-active .card-label { color: #1a2438; }
+#option-a .step.card-active .card-title { color: #1a2438; }
+#option-a .step.card-active .card-desc  { color: #4a5568; }
+#option-a .step.card-active .tag { background: #1a2438; color: #fff; border-color: #1a2438; }
+
+#option-a .cta-area {
+  margin-top: 72px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.55s ease 0.65s, transform 0.55s ease 0.65s;
+}
+#option-a .cta-area.visible { opacity: 1; transform: translateY(0); }
+
+#option-a .cta-note {
+  font-size: 14px; font-weight: 300; font-style: italic;
+  color: var(--text-secondary); line-height: 1.75; margin-bottom: 26px;
+}
+
+#option-a .cta-btn {
+  display: inline-block;
+  background: #1a2438; border: 1px solid #1a2438; color: #fff;
+  font-family: 'Barlow', sans-serif;
+  font-size: 12px; font-weight: 500; letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 15px 42px; border-radius: 4px;
+  text-decoration: none;
+  transition: background 0.25s, color 0.25s;
+}
+#option-a .cta-btn:hover { background: transparent; color: #1a2438; }
+
+@media (max-width: 600px) {
+  #option-a .step.left, #option-a .step.right {
+    padding: 0 0 0 56px; justify-content: flex-start; min-height: 130px;
+  }
+  #option-a .num { left: 0; transform: translate(7px, -50%); }
+  #option-a .timeline-svg { display: none; }
+  #option-a .steps { border-left: 1px solid var(--card-border); margin-left: 21px; }
+}
+
+
+/* ══════════════════════════════════════
+   OPTION B — styles (scoped)
+══════════════════════════════════════ */
+#option-b {
+  --bg:       #F2F3F5;
+  --card:     #ffffff;
+  --navy:     #1a2438;
+  --navy-mid: #2c3e5c;
+  --muted:    #5a6680;
+  --subtle:   #8a96aa;
+  --border:   #dde2ea;
+  --curve:    #c8cdd8;
+  --tag-bg:   #eef0f5;
+  --tag-bd:   #d4d9e4;
+  background: var(--bg);
+}
+
+#option-b .practice-path { padding: 96px 24px 112px; }
+
+#option-b .path-container {
+  max-width: 1020px;
+  margin: auto;
+  text-align: center;
+}
+
+#option-b .path-eyebrow {
+  font-size: 10.5px; font-weight: 500;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--subtle); margin-bottom: 18px;
+}
+
+#option-b .path-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(34px, 5vw, 56px);
+  font-weight: 800; text-transform: uppercase;
+  letter-spacing: .01em; line-height: 1.04;
+  color: var(--navy); margin-bottom: 12px;
+}
+
+#option-b .path-sub {
+  font-size: 15px; font-weight: 300; font-style: italic;
+  color: var(--muted); margin-bottom: 64px; line-height: 1.7;
+}
+
+#option-b .path-map { position: relative; height: 900px; }
+
+#option-b .path-line {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; overflow: visible;
+}
+
+#option-b #practiceCurve {
+  fill: none; stroke: var(--curve);
+  stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+
+#option-b .stage {
+  position: absolute; width: 290px;
+  background: var(--card);
+  padding: 24px 26px; border-radius: 8px;
+  text-align: left; border: 1px solid var(--border);
+  box-shadow: 0 2px 12px rgba(26,36,56,.06);
+  transition: transform .25s, box-shadow .25s, border-color .25s;
+  cursor: default;
+}
+
+#option-b .stage:hover, #option-b .stage.is-active {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(26,36,56,.15);
+  border-color: var(--navy);
+}
+
+#option-b .stage-label {
+  font-size: 10px; font-weight: 500;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--subtle); margin-bottom: 8px;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  transition: color .25s;
+}
+
+#option-b .stage:hover .stage-label,
+#option-b .stage.is-active .stage-label { color: var(--navy-mid); }
+
+#option-b .tag {
+  background: var(--tag-bg); border: 1px solid var(--tag-bd);
+  color: #6a7a96; padding: 2px 8px; border-radius: 3px;
+  font-size: 9px; letter-spacing: .07em;
+  transition: background .25s, color .25s, border-color .25s;
+}
+
+#option-b .stage:hover .tag,
+#option-b .stage.is-active .tag {
+  background: var(--navy); border-color: var(--navy); color: #fff;
+}
+
+#option-b .stage h3 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .02em;
+  line-height: 1.15; margin-bottom: 7px; color: var(--navy);
+}
+
+#option-b .stage p {
+  font-size: 13.5px; font-weight: 300; font-style: italic;
+  line-height: 1.65; color: var(--muted);
+}
+
+#option-b .stage1 { top:  40px; left: 0; }
+#option-b .stage2 { top: 260px; right: 0; }
+#option-b .stage3 { top: 490px; left: 0; }
+#option-b .stage4 { top: 715px; right: 0; }
+
+#option-b .node {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--navy); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px; font-weight: 700; letter-spacing: .06em;
+  border: none; cursor: pointer;
+  box-shadow: 0 4px 16px rgba(26,36,56,.18);
+  transition: transform .2s, background .2s, box-shadow .2s;
+  z-index: 2;
+}
+
+#option-b .node:hover, #option-b .node.is-active {
+  transform: translateX(-50%) scale(1.1);
+  background: var(--navy-mid);
+  box-shadow: 0 8px 24px rgba(26,36,56,.28);
+}
+
+#option-b .node1 { top: 110px; }
+#option-b .node2 { top: 330px; }
+#option-b .node3 { top: 558px; }
+#option-b .node4 { top: 782px; }
+
+#option-b .path-footer { margin-top: 72px; }
+
+#option-b .path-note {
+  font-size: 14px; font-weight: 300; font-style: italic;
+  color: var(--muted); line-height: 1.75; margin-bottom: 26px;
+}
+
+#option-b .path-note strong {
+  font-style: normal; font-weight: 500; color: var(--navy);
+}
+
+#option-b .path-button {
+  display: inline-block; background: var(--navy); color: #fff;
+  padding: 15px 40px; border-radius: 4px;
+  font-size: 12px; font-weight: 500; letter-spacing: .14em;
+  text-transform: uppercase; text-decoration: none;
+  transition: background .2s, transform .2s;
+}
+#option-b .path-button:hover { background: var(--navy-mid); transform: translateY(-2px); }
+
+#option-b .reveal { opacity: 0; transform: translateY(14px); }
+#option-b .reveal.is-visible {
+  opacity: 1; transform: translateY(0);
+  transition: opacity .55s ease, transform .55s ease;
+}
+
+@media (max-width: 860px) {
+  #option-b .path-map { height: auto; }
+  #option-b .path-line, #option-b .node { display: none; }
+  #option-b .stage {
+    position: relative; margin: 16px auto;
+    width: 100%; max-width: 480px;
+    left: auto; right: auto; top: auto;
+  }
+}
+
+/* ══════════════════════════════════════
+   OPTION C — scoped styles
+══════════════════════════════════════ */
+#option-c {
+  --oc-bg:         #0d1420;
+  --oc-glow-line:  #4a6fa5;
+  --oc-glow-bright:#7aa4d8;
+  --oc-glass-bg:   rgba(255,255,255,0.045);
+  --oc-glass-bd:   rgba(255,255,255,0.09);
+  --oc-glass-hov:  rgba(255,255,255,0.075);
+  --oc-white:      #f0f4ff;
+  --oc-mid:        #8a9ab5;
+  --oc-dim:        #4a5870;
+  --oc-accent:     #c8d8f0;
+  background: var(--oc-bg);
+  overflow: hidden;
+  position: relative;
+}
+
+#option-c::before {
+  content: '';
+  position: absolute;
+  top: 8%; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 800px;
+  background: radial-gradient(ellipse at center, rgba(74,111,165,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+#option-c .fw-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 120px 40px 140px;
+  position: relative;
+}
+
+#option-c .fw-header {
+  text-align: center;
+  margin-bottom: 80px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+#option-c .fw-header.in { opacity: 1; transform: translateY(0); }
+
+#option-c .fw-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 10px; font-weight: 500;
+  letter-spacing: .28em; text-transform: uppercase;
+  color: var(--oc-dim); margin-bottom: 22px;
+}
+#option-c .fw-eyebrow::before,
+#option-c .fw-eyebrow::after {
+  content: ''; width: 32px; height: 1px;
+  background: var(--oc-dim); opacity: .5;
+}
+
+#option-c .fw-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(38px, 5.5vw, 64px);
+  font-weight: 800; text-transform: uppercase;
+  letter-spacing: .01em; line-height: 1.0;
+  color: var(--oc-white); margin-bottom: 16px;
+}
+#option-c .fw-title em { font-style: normal; color: var(--oc-accent); opacity: .8; }
+
+#option-c .fw-sub {
+  font-size: 15px; font-weight: 300; font-style: italic;
+  color: var(--oc-mid); line-height: 1.7;
+}
+
+#option-c .fw-map {
+  position: relative;
+  min-height: 960px;
+}
+
+#option-c .fw-svg {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  overflow: visible; pointer-events: none;
+}
+
+#option-c #glowPathC {
+  fill: none; stroke: var(--oc-glow-line);
+  stroke-width: 6; stroke-linecap: round;
+  filter: blur(8px); opacity: 0.35;
+}
+#option-c #mainPathC {
+  fill: none; stroke: var(--oc-glow-bright);
+  stroke-width: 1.5; stroke-linecap: round; opacity: 0.7;
+}
+
+#option-c .fw-step {
+  position: absolute;
+  width: 44%; max-width: 380px;
+  opacity: 0; transform: translateY(28px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+#option-c .fw-step.in { opacity: 1; transform: translateY(0); }
+#option-c .fw-step.left  { left: 0; }
+#option-c .fw-step.right { right: 0; }
+#option-c .fw-step-1 { top:  20px; transition-delay: .1s; }
+#option-c .fw-step-2 { top: 240px; transition-delay: .2s; }
+#option-c .fw-step-3 { top: 470px; transition-delay: .3s; }
+#option-c .fw-step-4 { top: 700px; transition-delay: .4s; }
+
+#option-c .fw-card {
+  background: var(--oc-glass-bg);
+  border: 1px solid var(--oc-glass-bd);
+  border-radius: 12px; padding: 28px 32px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: relative; overflow: hidden; cursor: default;
+  transition: background .3s, border-color .3s, box-shadow .3s, transform .3s;
+}
+#option-c .fw-card::before {
+  content: ''; position: absolute;
+  top: 0; left: 20%; right: 20%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+}
+#option-c .fw-card:hover,
+#option-c .fw-card.active {
+  background: var(--oc-glass-hov);
+  border-color: rgba(122,164,216,0.3);
+  box-shadow: 0 0 40px rgba(74,111,165,0.15), 0 20px 40px rgba(0,0,0,0.3);
+  transform: translateY(-4px);
+}
+
+#option-c .fw-ghost-num {
+  position: absolute; top: -10px; right: 16px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 96px; font-weight: 800; line-height: 1;
+  color: rgba(255,255,255,0.03); letter-spacing: -.02em;
+  user-select: none; pointer-events: none; transition: color .3s;
+}
+#option-c .fw-card:hover .fw-ghost-num,
+#option-c .fw-card.active .fw-ghost-num { color: rgba(122,164,216,0.07); }
+
+#option-c .fw-stage-label {
+  font-size: 10px; font-weight: 500;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--oc-dim); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 10px;
+  transition: color .3s;
+}
+#option-c .fw-card:hover .fw-stage-label,
+#option-c .fw-card.active .fw-stage-label { color: var(--oc-accent); }
+
+#option-c .fw-tag {
+  background: rgba(122,164,216,0.1);
+  border: 1px solid rgba(122,164,216,0.2);
+  color: var(--oc-glow-bright);
+  padding: 2px 8px; border-radius: 3px;
+  font-size: 9px; letter-spacing: .07em;
+  transition: background .3s, border-color .3s;
+}
+#option-c .fw-card:hover .fw-tag,
+#option-c .fw-card.active .fw-tag {
+  background: rgba(122,164,216,0.18);
+  border-color: rgba(122,164,216,0.4);
+}
+
+#option-c .fw-card-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 22px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .02em;
+  line-height: 1.15; color: var(--oc-white);
+  margin-bottom: 8px; transition: color .3s;
+}
+#option-c .fw-card:hover .fw-card-title,
+#option-c .fw-card.active .fw-card-title { color: #ffffff; }
+
+#option-c .fw-card-desc {
+  font-size: 13.5px; font-weight: 300; font-style: italic;
+  color: var(--oc-mid); line-height: 1.7; transition: color .3s;
+}
+#option-c .fw-card:hover .fw-card-desc,
+#option-c .fw-card.active .fw-card-desc { color: #a0b4cc; }
+
+#option-c .fw-node {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--oc-bg);
+  border: 1.5px solid var(--oc-glow-bright);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12px; font-weight: 700; letter-spacing: .06em;
+  color: var(--oc-glow-bright);
+  z-index: 4; cursor: pointer;
+  box-shadow: 0 0 0 0 rgba(122,164,216,0);
+  transition: background .25s, border-color .25s, color .25s, box-shadow .25s, transform .25s;
+}
+#option-c .fw-node:hover,
+#option-c .fw-node.active {
+  background: var(--oc-glow-bright); border-color: var(--oc-glow-bright);
+  color: var(--oc-bg);
+  transform: translateX(-50%) scale(1.12);
+  box-shadow: 0 0 0 6px rgba(122,164,216,0.12), 0 0 20px rgba(122,164,216,0.35);
+}
+#option-c .fw-node-1 { top: 108px; }
+#option-c .fw-node-2 { top: 328px; }
+#option-c .fw-node-3 { top: 558px; }
+#option-c .fw-node-4 { top: 782px; }
+
+#option-c .fw-footer {
+  margin-top: 80px; text-align: center;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity .6s ease .5s, transform .6s ease .5s;
+}
+#option-c .fw-footer.in { opacity: 1; transform: translateY(0); }
+
+#option-c .fw-note {
+  font-size: 14px; font-weight: 300; font-style: italic;
+  color: var(--oc-mid); line-height: 1.8; margin-bottom: 32px;
+}
+
+#option-c .fw-btn {
+  display: inline-block; position: relative;
+  background: transparent;
+  border: 1px solid rgba(122,164,216,0.4);
+  color: var(--oc-accent);
+  font-family: 'Barlow', sans-serif;
+  font-size: 11px; font-weight: 500;
+  letter-spacing: .2em; text-transform: uppercase;
+  padding: 16px 48px; border-radius: 4px;
+  text-decoration: none; overflow: hidden;
+  transition: background .25s, border-color .25s, color .25s, box-shadow .25s;
+}
+#option-c .fw-btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(122,164,216,0.1) 0%, transparent 60%);
+  opacity: 0; transition: opacity .25s;
+}
+#option-c .fw-btn:hover {
+  border-color: rgba(122,164,216,0.8); color: #ffffff;
+  box-shadow: 0 0 24px rgba(122,164,216,0.2);
+}
+#option-c .fw-btn:hover::before { opacity: 1; }
+
+@media (max-width: 700px) {
+  #option-c .fw-map { min-height: auto; }
+  #option-c .fw-svg, #option-c .fw-node { display: none; }
+  #option-c .fw-step {
+    position: relative; width: 100%; max-width: 100%;
+    left: auto; right: auto; top: auto; margin-bottom: 20px;
+  }
+}
+
+/* ══════════════════════════════════════
+   OPTION D — scoped styles (off-white bg, white cards)
+══════════════════════════════════════ */
+#option-d {
+  --od-bg:      #f4f5f7;
+  --od-navy:    #1a2438;
+  --od-accent:  #7aa4d8;
+  background: var(--od-bg);
+}
+#option-d .fw-inner { max-width: 1080px; margin: 0 auto; padding: 120px 40px 140px; position: relative; }
+#option-d .fw-header { text-align: center; margin-bottom: 80px; opacity: 0; transform: translateY(20px); transition: opacity .65s ease, transform .65s ease; }
+#option-d .fw-header.in { opacity: 1; transform: translateY(0); }
+#option-d .fw-eyebrow { display: inline-flex; align-items: center; gap: 12px; font-size: 10px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: #6a7e9a; margin-bottom: 20px; }
+#option-d .fw-eyebrow::before, #option-d .fw-eyebrow::after { content: ''; width: 28px; height: 1px; background: var(--od-accent); opacity: .4; }
+#option-d .fw-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(36px,5.5vw,62px); font-weight: 800; text-transform: uppercase; letter-spacing: .01em; line-height: 1.0; color: var(--od-navy); margin-bottom: 14px; }
+#option-d .fw-sub { font-size: 15px; font-weight: 300; font-style: italic; color: rgba(26,36,56,0.45); line-height: 1.7; }
+#option-d .fw-map { position: relative; min-height: 960px; }
+#option-d .fw-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+#option-d #mainPathD { fill: none; stroke: var(--od-accent); stroke-width: 1.5; stroke-linecap: round; stroke-dasharray: 6 6; opacity: 0.55; }
+#option-d #glowPathD { fill: none; stroke: #4a6fa5; stroke-width: 8; stroke-linecap: round; filter: blur(10px); opacity: 0.18; }
+#option-d .fw-step { position: absolute; width: 44%; max-width: 370px; opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+#option-d .fw-step.in { opacity: 1; transform: translateY(0); }
+#option-d .fw-step.left { left: 0; } #option-d .fw-step.right { right: 0; }
+#option-d .fw-step-1 { top: 20px; transition-delay: .08s; } #option-d .fw-step-2 { top: 240px; transition-delay: .18s; }
+#option-d .fw-step-3 { top: 470px; transition-delay: .28s; } #option-d .fw-step-4 { top: 700px; transition-delay: .38s; }
+#option-d .fw-card { background: #ffffff; border: 1px solid rgba(26,36,56,0.08); border-radius: 10px; padding: 26px 30px; position: relative; overflow: hidden; cursor: default; box-shadow: 0 2px 16px rgba(26,36,56,0.08); transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease; }
+#option-d .fw-card::before { content: ''; position: absolute; top: 0; left: 15%; right: 15%; height: 1px; background: linear-gradient(90deg, transparent, rgba(122,164,216,0.35), transparent); }
+#option-d .fw-card:hover, #option-d .fw-card.active { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(26,36,56,0.15); border-color: rgba(122,164,216,0.4); }
+#option-d .fw-ghost-num { position: absolute; top: -8px; right: 14px; font-family: 'Barlow Condensed', sans-serif; font-size: 90px; font-weight: 800; line-height: 1; color: rgba(26,36,56,0.05); letter-spacing: -.02em; user-select: none; pointer-events: none; transition: color .3s; }
+#option-d .fw-card:hover .fw-ghost-num, #option-d .fw-card.active .fw-ghost-num { color: rgba(26,36,56,0.08); }
+#option-d .fw-stage-label { font-size: 10px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: #8a96aa; margin-bottom: 9px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; transition: color .25s; }
+#option-d .fw-card:hover .fw-stage-label, #option-d .fw-card.active .fw-stage-label { color: #4a6fa5; }
+#option-d .fw-tag { background: #eef2f8; border: 1px solid #c8d4e8; color: #4a6fa5; padding: 2px 8px; border-radius: 3px; font-size: 9px; letter-spacing: .07em; transition: background .25s, border-color .25s, color .25s; }
+#option-d .fw-card:hover .fw-tag, #option-d .fw-card.active .fw-tag { background: var(--od-navy); border-color: var(--od-navy); color: #fff; }
+#option-d .fw-card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 21px; font-weight: 700; text-transform: uppercase; letter-spacing: .02em; line-height: 1.15; color: var(--od-navy); margin-bottom: 8px; transition: color .25s; }
+#option-d .fw-card-desc { font-size: 13.5px; font-weight: 300; font-style: italic; color: #4a5568; line-height: 1.68; }
+#option-d .fw-node { position: absolute; left: 50%; transform: translateX(-50%); width: 40px; height: 40px; border-radius: 50%; background: var(--od-bg); border: 1.5px solid var(--od-accent); display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--od-accent); z-index: 4; cursor: pointer; box-shadow: 0 0 0 4px rgba(122,164,216,0.1); transition: background .25s, border-color .25s, color .25s, box-shadow .25s, transform .25s; }
+#option-d .fw-node:hover, #option-d .fw-node.active { background: var(--od-accent); border-color: var(--od-accent); color: var(--od-navy); transform: translateX(-50%) scale(1.1); box-shadow: 0 0 0 6px rgba(122,164,216,0.15), 0 0 18px rgba(122,164,216,0.3); }
+#option-d .fw-node-1 { top: 108px; } #option-d .fw-node-2 { top: 328px; } #option-d .fw-node-3 { top: 558px; } #option-d .fw-node-4 { top: 782px; }
+#option-d .fw-footer { margin-top: 80px; text-align: center; opacity: 0; transform: translateY(16px); transition: opacity .6s ease .5s, transform .6s ease .5s; }
+#option-d .fw-footer.in { opacity: 1; transform: translateY(0); }
+#option-d .fw-note { font-size: 14px; font-weight: 300; font-style: italic; color: #8a96aa; line-height: 1.8; margin-bottom: 30px; }
+#option-d .fw-btn { display: inline-block; background: var(--od-navy); border: 1px solid var(--od-navy); color: #fff; font-family: 'Barlow', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; padding: 15px 44px; border-radius: 4px; text-decoration: none; transition: background .25s, border-color .25s, color .25s; }
+#option-d .fw-btn:hover { background: transparent; color: var(--od-navy); border-color: var(--od-navy); }
+@media (max-width: 700px) {
+  #option-d .fw-map { min-height: auto; }
+  #option-d .fw-svg, #option-d .fw-node { display: none; }
+  #option-d .fw-step { position: relative; width: 100%; max-width: 100%; left: auto; right: auto; top: auto; margin-bottom: 20px; }
+}
+
+/* ══════════════════════════════════════
+   OPTION E — scoped styles (navy bg, white cards)
+══════════════════════════════════════ */
+#option-e {
+  --oe-bg:      #3d5a80;
+  --oe-navy:    #1a2438;
+  --oe-accent:  #7aa4d8;
+  background: var(--oe-bg);
+}
+#option-e .fw-inner { max-width: 1080px; margin: 0 auto; padding: 120px 40px 140px; position: relative; }
+#option-e .fw-header { text-align: center; margin-bottom: 80px; opacity: 0; transform: translateY(20px); transition: opacity .65s ease, transform .65s ease; }
+#option-e .fw-header.in { opacity: 1; transform: translateY(0); }
+#option-e .fw-eyebrow { display: inline-flex; align-items: center; gap: 12px; font-size: 10px; font-weight: 500; letter-spacing: .26em; text-transform: uppercase; color: #a0b8d8; margin-bottom: 20px; }
+#option-e .fw-eyebrow::before, #option-e .fw-eyebrow::after { content: ''; width: 28px; height: 1px; background: var(--oe-accent); opacity: .4; }
+#option-e .fw-title { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(36px,5.5vw,62px); font-weight: 800; text-transform: uppercase; letter-spacing: .01em; line-height: 1.0; color: #ffffff; margin-bottom: 14px; }
+#option-e .fw-sub { font-size: 15px; font-weight: 300; font-style: italic; color: rgba(255,255,255,0.5); line-height: 1.7; }
+#option-e .fw-map { position: relative; min-height: 960px; }
+#option-e .fw-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+#option-e #mainPathE { fill: none; stroke: var(--oe-accent); stroke-width: 1.5; stroke-linecap: round; stroke-dasharray: 6 6; opacity: 0.55; }
+#option-e #glowPathE { fill: none; stroke: #4a6fa5; stroke-width: 8; stroke-linecap: round; filter: blur(10px); opacity: 0.22; }
+#option-e .fw-step { position: absolute; width: 44%; max-width: 370px; opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+#option-e .fw-step.in { opacity: 1; transform: translateY(0); }
+#option-e .fw-step.left { left: 0; } #option-e .fw-step.right { right: 0; }
+#option-e .fw-step-1 { top: 20px; transition-delay: .08s; } #option-e .fw-step-2 { top: 240px; transition-delay: .18s; }
+#option-e .fw-step-3 { top: 470px; transition-delay: .28s; } #option-e .fw-step-4 { top: 700px; transition-delay: .38s; }
+#option-e .fw-card { background: #ffffff; border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 26px 30px; position: relative; overflow: hidden; cursor: default; box-shadow: 0 2px 20px rgba(10,18,35,0.2); transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease; }
+#option-e .fw-card::before { content: ''; position: absolute; top: 0; left: 15%; right: 15%; height: 1px; background: linear-gradient(90deg, transparent, rgba(122,164,216,0.35), transparent); }
+#option-e .fw-card:hover, #option-e .fw-card.active { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(10,18,35,0.3); border-color: rgba(122,164,216,0.4); }
+#option-e .fw-ghost-num { position: absolute; top: -8px; right: 14px; font-family: 'Barlow Condensed', sans-serif; font-size: 90px; font-weight: 800; line-height: 1; color: rgba(26,36,56,0.05); letter-spacing: -.02em; user-select: none; pointer-events: none; transition: color .3s; }
+#option-e .fw-card:hover .fw-ghost-num, #option-e .fw-card.active .fw-ghost-num { color: rgba(26,36,56,0.08); }
+#option-e .fw-stage-label { font-size: 10px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: #8a96aa; margin-bottom: 9px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; transition: color .25s; }
+#option-e .fw-card:hover .fw-stage-label, #option-e .fw-card.active .fw-stage-label { color: #4a6fa5; }
+#option-e .fw-tag { background: #eef2f8; border: 1px solid #c8d4e8; color: #4a6fa5; padding: 2px 8px; border-radius: 3px; font-size: 9px; letter-spacing: .07em; transition: background .25s, border-color .25s, color .25s; }
+#option-e .fw-card:hover .fw-tag, #option-e .fw-card.active .fw-tag { background: var(--oe-navy); border-color: var(--oe-navy); color: #fff; }
+#option-e .fw-card-title { font-family: 'Barlow Condensed', sans-serif; font-size: 21px; font-weight: 700; text-transform: uppercase; letter-spacing: .02em; line-height: 1.15; color: var(--oe-navy); margin-bottom: 8px; transition: color .25s; }
+#option-e .fw-card-desc { font-size: 13.5px; font-weight: 300; font-style: italic; color: #4a5568; line-height: 1.68; }
+#option-e .fw-node { position: absolute; left: 50%; transform: translateX(-50%); width: 40px; height: 40px; border-radius: 50%; background: var(--oe-bg); border: 1.5px solid var(--oe-accent); display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--oe-accent); z-index: 4; cursor: pointer; box-shadow: 0 0 0 4px rgba(122,164,216,0.12); transition: background .25s, border-color .25s, color .25s, box-shadow .25s, transform .25s; }
+#option-e .fw-node:hover, #option-e .fw-node.active { background: var(--oe-accent); border-color: var(--oe-accent); color: var(--oe-navy); transform: translateX(-50%) scale(1.1); box-shadow: 0 0 0 6px rgba(122,164,216,0.18), 0 0 18px rgba(122,164,216,0.35); }
+#option-e .fw-node-1 { top: 108px; } #option-e .fw-node-2 { top: 328px; } #option-e .fw-node-3 { top: 558px; } #option-e .fw-node-4 { top: 782px; }
+#option-e .fw-footer { margin-top: 80px; text-align: center; opacity: 0; transform: translateY(16px); transition: opacity .6s ease .5s, transform .6s ease .5s; }
+#option-e .fw-footer.in { opacity: 1; transform: translateY(0); }
+#option-e .fw-note { font-size: 14px; font-weight: 300; font-style: italic; color: rgba(255,255,255,0.45); line-height: 1.8; margin-bottom: 30px; }
+#option-e .fw-btn { display: inline-block; background: #ffffff; border: 1px solid #ffffff; color: var(--oe-navy); font-family: 'Barlow', sans-serif; font-size: 11px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; padding: 15px 44px; border-radius: 4px; text-decoration: none; transition: background .25s, border-color .25s, color .25s, box-shadow .25s; }
+#option-e .fw-btn:hover { background: transparent; color: #ffffff; border-color: rgba(255,255,255,0.6); box-shadow: 0 0 20px rgba(255,255,255,0.08); }
+@media (max-width: 700px) {
+  #option-e .fw-map { min-height: auto; }
+  #option-e .fw-svg, #option-e .fw-node { display: none; }
+  #option-e .fw-step { position: relative; width: 100%; max-width: 100%; left: auto; right: auto; top: auto; margin-bottom: 20px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ── INTRO ── -->
+<div class="intro">
+  <p class="intro-label">Meditative Monkey — Practice Framework</p>
+  <h1 class="intro-title">Five Design Options</h1>
+  <p class="intro-sub">Please review all options below and share which direction feels right.</p>
+  <div class="option-tabs">
+    <a href="#option-a" class="tab-link a">Option A ↓</a>
+    <a href="#option-b" class="tab-link b">Option B ↓</a>
+    <a href="#option-c" class="tab-link c">Option C ↓</a>
+    <a href="#option-d" class="tab-link d">Option D ↓</a>
+    <a href="#option-e" class="tab-link e">Option E ↓</a>
+  </div>
+</div>
+
+<!-- ── OPTION A HEADER ── -->
+<div class="option-header" id="label-a">
+  <span class="option-badge">Option A</span>
+  <p class="option-desc">Flowing S-curve with dot-line path. Cards alternate left and right, connected by a static decorative curve. Clean and editorial.</p>
+  <div class="divider-line"></div>
+</div>
+
+<!-- ══ OPTION A ══ -->
+<div id="option-a">
+<section class="section">
+  <p class="eyebrow">The Practice Framework</p>
+  <h2 class="headline">A Structured Pathway for Long-Term Movement Practice</h2>
+  <p class="subheadline">A clear developmental journey over time.</p>
+  <div class="divider"></div>
+
+  <div class="timeline-wrap" id="timelineWrapA">
+    <svg class="timeline-svg" id="curveSvgA" aria-hidden="true">
+      <path id="curvePathA" fill="none" stroke="#c8cdd8" stroke-width="1.5" stroke-dasharray="6 5"/>
+    </svg>
+
+    <div class="steps" id="stepsA">
+      <div class="step left" data-observe-a>
+        <div class="card">
+          <div class="card-label">Foundations <span class="tag">Most people begin here</span></div>
+          <div class="card-title">Rebuild Trust in Your Body</div>
+          <div class="card-desc">Strength, coordination, and awareness through clear, repeatable practice.</div>
+        </div>
+        <div class="num">01</div>
+      </div>
+      <div class="step right" data-observe-a>
+        <div class="card">
+          <div class="card-label">Integration</div>
+          <div class="card-title">Where the Unfamiliar Becomes Familiar</div>
+          <div class="card-desc">Link strength and mobility into fluid, adaptable movement.</div>
+        </div>
+        <div class="num">02</div>
+      </div>
+      <div class="step left" data-observe-a>
+        <div class="card">
+          <div class="card-label">Expression</div>
+          <div class="card-title">Confidence Made Visible</div>
+          <div class="card-desc">Capacity becomes adaptable. Movement becomes play.</div>
+        </div>
+        <div class="num">03</div>
+      </div>
+      <div class="step right" data-observe-a>
+        <div class="card">
+          <div class="card-label">Stewardship</div>
+          <div class="card-title">Carry the Culture Forward</div>
+          <div class="card-desc">Sustain your practice and support the community around you.</div>
+        </div>
+        <div class="num">04</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-area" id="ctaA">
+    <p class="cta-note">You don't need prior experience to begin.<br>Only a willingness to practice consistently.</p>
+    <a href="#" class="cta-btn">Begin with Foundations</a>
+  </div>
+</section>
+</div>
+
+<!-- ── OPTION B HEADER ── -->
+<div class="option-header" id="label-b">
+  <span class="option-badge">Option B</span>
+  <p class="option-desc">S-curve drawn on scroll. Cards positioned absolutely, connected by animated path. More dynamic and interactive.</p>
+  <div class="divider-line"></div>
+</div>
+
+<!-- ══ OPTION B ══ -->
+<div id="option-b">
+<section class="practice-path">
+  <div class="path-container">
+    <div class="path-header reveal">
+      <p class="path-eyebrow">The Practice Framework</p>
+      <h2 class="path-title">A Structured Pathway<br>for Long-Term Movement Practice</h2>
+      <p class="path-sub">A clear developmental journey over time.</p>
+    </div>
+
+    <div class="path-map" id="pathMap">
+      <svg class="path-line" id="pathSvg" viewBox="0 0 1020 900" preserveAspectRatio="none">
+        <path id="practiceCurve"/>
+      </svg>
+
+      <button class="node node1" data-target="stage1" aria-label="Stage 1: Foundations">01</button>
+      <button class="node node2" data-target="stage2" aria-label="Stage 2: Integration">02</button>
+      <button class="node node3" data-target="stage3" aria-label="Stage 3: Expression">03</button>
+      <button class="node node4" data-target="stage4" aria-label="Stage 4: Stewardship">04</button>
+
+      <div class="stage stage1 reveal">
+        <div class="stage-label">Foundations <span class="tag">Most people begin here</span></div>
+        <h3>Rebuild Trust in Your Body</h3>
+        <p>Strength, coordination, and awareness through clear, repeatable practice.</p>
+      </div>
+      <div class="stage stage2 reveal">
+        <div class="stage-label">Integration</div>
+        <h3>Where the Unfamiliar Becomes Familiar</h3>
+        <p>Link strength and mobility into fluid, adaptable movement.</p>
+      </div>
+      <div class="stage stage3 reveal">
+        <div class="stage-label">Expression</div>
+        <h3>Confidence Made Visible</h3>
+        <p>Capacity becomes adaptable. Movement becomes play.</p>
+      </div>
+      <div class="stage stage4 reveal">
+        <div class="stage-label">Stewardship</div>
+        <h3>Carry the Culture Forward</h3>
+        <p>Sustain your practice and support the community around you.</p>
+      </div>
+    </div>
+
+    <div class="path-footer reveal">
+      <p class="path-note">
+        <strong>You don't need prior experience to begin.</strong><br>
+        Only a willingness to practice consistently.
+      </p>
+      <a class="path-button" href="#foundations">Begin with Foundations</a>
+    </div>
+  </div>
+</section>
+</div>
+
+<script>
+// ══════════════════════════════════════
+//  OPTION A — JS
+// ══════════════════════════════════════
+(function () {
+  function buildCurveA() {
+    var wrap = document.getElementById('timelineWrapA');
+    var steps = wrap.querySelectorAll('.step');
+    if (!steps.length) return;
+    var wrapRect = wrap.getBoundingClientRect();
+    var points = [];
+    steps.forEach(function(step) {
+      var r = step.getBoundingClientRect();
+      points.push({ x: wrap.offsetWidth / 2, y: r.top - wrapRect.top + r.height / 2 });
+    });
+    var swing = wrap.offsetWidth * 0.22;
+    var d = 'M ' + points[0].x + ' ' + points[0].y;
+    for (var i = 0; i < points.length - 1; i++) {
+      var p0 = points[i], p1 = points[i+1];
+      var dir = (i % 2 === 0) ? 1 : -1;
+      var mid = (p0.y + p1.y) / 2;
+      d += ' C ' + (p0.x + swing*dir) + ' ' + (p0.y + (mid-p0.y)*0.5) +
+           ', ' + (p1.x + swing*dir) + ' ' + (p1.y - (p1.y-mid)*0.5) +
+           ', ' + p1.x + ' ' + p1.y;
+    }
+    document.getElementById('curvePathA').setAttribute('d', d);
+  }
+
+  var obsA = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('[data-observe-a]').forEach(function(el) { obsA.observe(el); });
+
+  var ctaObsA = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.3 });
+  ctaObsA.observe(document.getElementById('ctaA'));
+
+  window.addEventListener('load', function() {
+    buildCurveA();
+    document.querySelectorAll('[data-observe-a]').forEach(function(el) {
+      if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible');
+    });
+    if (document.getElementById('ctaA').getBoundingClientRect().top < window.innerHeight) {
+      document.getElementById('ctaA').classList.add('visible');
+    }
+  });
+
+  window.addEventListener('resize', buildCurveA);
+
+  document.querySelectorAll('#option-a .num').forEach(function(num) {
+    var step = num.closest('.step');
+    num.addEventListener('mouseenter', function() { num.classList.add('num-active'); step.classList.add('card-active'); });
+    num.addEventListener('mouseleave', function() { num.classList.remove('num-active'); step.classList.remove('card-active'); });
+  });
+
+  document.querySelectorAll('#option-a .card').forEach(function(card) {
+    var step = card.closest('.step');
+    var num = step.querySelector('.num');
+    card.addEventListener('mouseenter', function() { num.classList.add('num-active'); step.classList.add('card-active'); });
+    card.addEventListener('mouseleave', function() { num.classList.remove('num-active'); step.classList.remove('card-active'); });
+  });
+})();
+
+
+// ══════════════════════════════════════
+//  OPTION B — JS
+// ══════════════════════════════════════
+(function () {
+  var curve = document.getElementById('practiceCurve');
+  var map   = document.getElementById('pathMap');
+
+  // Build path
+  var cx = 510, sw = 200;
+  var pts = [{x:cx,y:110},{x:cx,y:330},{x:cx,y:558},{x:cx,y:782}];
+  var d = 'M '+pts[0].x+' '+pts[0].y;
+  for (var i = 0; i < pts.length-1; i++) {
+    var p0=pts[i], p1=pts[i+1], dir=(i%2===0)?1:-1, mid=(p0.y+p1.y)/2;
+    d += ' C '+(p0.x+sw*dir)+' '+(p0.y+(mid-p0.y)*0.6)+
+         ', '+(p1.x+sw*dir)+' '+(p1.y-(p1.y-mid)*0.6)+
+         ', '+p1.x+' '+p1.y;
+  }
+  curve.setAttribute('d', d);
+
+  var len = curve.getTotalLength();
+  curve.style.strokeDasharray  = len;
+  curve.style.strokeDashoffset = len;
+
+  var drawn = false;
+  function checkDraw() {
+    if (drawn) return;
+    var rect = map.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.85) {
+      drawn = true;
+      curve.style.transition = 'stroke-dashoffset 2.2s cubic-bezier(0.22,1,0.36,1)';
+      curve.style.strokeDashoffset = '0';
+    }
+  }
+  window.addEventListener('scroll', checkDraw, { passive: true });
+  window.addEventListener('load', checkDraw);
+
+  // Reveals
+  var reveals = document.querySelectorAll('#option-b .reveal');
+  var revealDone = [];
+  function checkReveals() {
+    reveals.forEach(function(el, i) {
+      if (revealDone[i]) return;
+      if (el.getBoundingClientRect().top < window.innerHeight * 0.9) {
+        revealDone[i] = true;
+        setTimeout(function(){ el.classList.add('is-visible'); }, i * 90);
+      }
+    });
+  }
+  window.addEventListener('scroll', checkReveals, { passive: true });
+  window.addEventListener('load', checkReveals);
+
+  // Hover
+  document.querySelectorAll('#option-b .node').forEach(function(node) {
+    var card = document.querySelector('#option-b .' + node.dataset.target);
+    if (!card) return;
+    function on()  { node.classList.add('is-active');    card.classList.add('is-active'); }
+    function off() { node.classList.remove('is-active'); card.classList.remove('is-active'); }
+    node.addEventListener('mouseenter', on);  node.addEventListener('mouseleave', off);
+    node.addEventListener('focus', on);       node.addEventListener('blur', off);
+    card.addEventListener('mouseenter', on);  card.addEventListener('mouseleave', off);
+  });
+})();
+</script>
+
+<!-- ── OPTION C HEADER ── -->
+<div class="option-header" id="label-c">
+  <span class="option-badge">Option C</span>
+  <p class="option-desc">Dark premium aesthetic. Glowing S-curve drawn on scroll, glass-effect cards with ghost numbers. Immersive and high-impact.</p>
+  <div class="divider-line"></div>
+</div>
+
+<!-- ══ OPTION C ══ -->
+<div id="option-c">
+  <div class="fw-inner">
+
+    <div class="fw-header" id="fwHeaderC">
+      <p class="fw-eyebrow">The Practice Framework</p>
+      <h2 class="fw-title">A Structured Pathway for<br><em>Long-Term Movement</em></h2>
+      <p class="fw-sub">A clear developmental journey over time.</p>
+    </div>
+
+    <div class="fw-map" id="fwMapC">
+      <svg class="fw-svg" viewBox="0 0 1000 960" preserveAspectRatio="none">
+        <path id="glowPathC"/>
+        <path id="mainPathC"/>
+      </svg>
+
+      <div class="fw-node fw-node-1">01</div>
+      <div class="fw-node fw-node-2">02</div>
+      <div class="fw-node fw-node-3">03</div>
+      <div class="fw-node fw-node-4">04</div>
+
+      <div class="fw-step left fw-step-1" id="fwsc-1">
+        <div class="fw-card" id="fw-card-c1">
+          <div class="fw-ghost-num">01</div>
+          <div class="fw-stage-label">Foundations <span class="fw-tag">Most people begin here</span></div>
+          <div class="fw-card-title">Rebuild Trust in Your Body</div>
+          <div class="fw-card-desc">Strength, coordination, and awareness through clear, repeatable practice.</div>
+        </div>
+      </div>
+      <div class="fw-step right fw-step-2" id="fwsc-2">
+        <div class="fw-card" id="fw-card-c2">
+          <div class="fw-ghost-num">02</div>
+          <div class="fw-stage-label">Integration</div>
+          <div class="fw-card-title">Where the Unfamiliar Becomes Familiar</div>
+          <div class="fw-card-desc">Link strength and mobility into fluid, adaptable movement.</div>
+        </div>
+      </div>
+      <div class="fw-step left fw-step-3" id="fwsc-3">
+        <div class="fw-card" id="fw-card-c3">
+          <div class="fw-ghost-num">03</div>
+          <div class="fw-stage-label">Expression</div>
+          <div class="fw-card-title">Confidence Made Visible</div>
+          <div class="fw-card-desc">Capacity becomes adaptable. Movement becomes play.</div>
+        </div>
+      </div>
+      <div class="fw-step right fw-step-4" id="fwsc-4">
+        <div class="fw-card" id="fw-card-c4">
+          <div class="fw-ghost-num">04</div>
+          <div class="fw-stage-label">Stewardship</div>
+          <div class="fw-card-title">Carry the Culture Forward</div>
+          <div class="fw-card-desc">Sustain your practice and support the community around you.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fw-footer" id="fwFooterC">
+      <p class="fw-note">
+        You don't need prior experience to begin.<br>
+        Only a willingness to practice consistently.
+      </p>
+      <a href="#" class="fw-btn">Begin with Foundations</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function () {
+  var glow = document.getElementById('glowPathC');
+  var main = document.getElementById('mainPathC');
+  var mapC = document.getElementById('fwMapC');
+  if (!glow || !main || !mapC) return;
+
+  var CX = 500, SW = 210;
+  var nodeY = [128, 348, 578, 802];
+
+  var d = 'M ' + CX + ' ' + nodeY[0];
+  for (var i = 0; i < nodeY.length - 1; i++) {
+    var y0 = nodeY[i], y1 = nodeY[i+1];
+    var dir = (i % 2 === 0) ? 1 : -1;
+    var mid = (y0 + y1) / 2;
+    d += ' C '+(CX+SW*dir)+' '+(y0+(mid-y0)*0.55)+
+         ', '+(CX+SW*dir)+' '+(y1-(y1-mid)*0.55)+
+         ', '+CX+' '+y1;
+  }
+  glow.setAttribute('d', d);
+  main.setAttribute('d', d);
+
+  var len = main.getTotalLength();
+  main.style.strokeDasharray  = len;
+  main.style.strokeDashoffset = len;
+  glow.style.strokeDasharray  = len;
+  glow.style.strokeDashoffset = len;
+
+  var drawnC = false;
+  function checkDrawC() {
+    if (drawnC) return;
+    if (mapC.getBoundingClientRect().top < window.innerHeight * 0.85) {
+      drawnC = true;
+      var t = 'stroke-dashoffset 2.4s cubic-bezier(0.22,1,0.36,1)';
+      main.style.transition = t;
+      glow.style.transition = t;
+      main.style.strokeDashoffset = '0';
+      glow.style.strokeDashoffset = '0';
+    }
+  }
+
+  var revEls = [
+    document.getElementById('fwHeaderC'),
+    document.getElementById('fwsc-1'),
+    document.getElementById('fwsc-2'),
+    document.getElementById('fwsc-3'),
+    document.getElementById('fwsc-4'),
+    document.getElementById('fwFooterC')
+  ];
+  var revDone = revEls.map(function() { return false; });
+
+  function checkRevC() {
+    revEls.forEach(function(el, i) {
+      if (revDone[i] || !el) return;
+      if (el.getBoundingClientRect().top < window.innerHeight * 0.88) {
+        revDone[i] = true;
+        setTimeout(function(){ el.classList.add('in'); }, i * 80);
+      }
+    });
+  }
+
+  window.addEventListener('scroll', function() { checkDrawC(); checkRevC(); }, { passive: true });
+  window.addEventListener('load', function() { checkDrawC(); checkRevC(); });
+
+  var cNodes = document.querySelectorAll('#option-c .fw-node');
+  cNodes.forEach(function(node, i) {
+    var card = document.getElementById('fw-card-c' + (i+1));
+    if (!card) return;
+    function on()  { node.classList.add('active');    card.classList.add('active'); }
+    function off() { node.classList.remove('active'); card.classList.remove('active'); }
+    node.addEventListener('mouseenter', on);  node.addEventListener('mouseleave', off);
+    card.addEventListener('mouseenter', on);  card.addEventListener('mouseleave', off);
+  });
+})();
+</script>
+
+<!-- ── OPTION D HEADER ── -->
+<div class="option-header" id="label-d">
+  <span class="option-badge">Option D</span>
+  <p class="option-desc">Off-white background with white cards. C's structure and ghost numbers with A's brightness and simplicity. Dashed S-curve.</p>
+  <div class="divider-line"></div>
+</div>
+
+<!-- ══ OPTION D ══ -->
+<div id="option-d">
+  <div class="fw-inner">
+    <div class="fw-header" id="fwHeaderD">
+      <p class="fw-eyebrow">The Practice Framework</p>
+      <h2 class="fw-title">A Structured Pathway for Long-Term Movement Practice</h2>
+      <p class="fw-sub">A clear developmental journey over time.</p>
+    </div>
+    <div class="fw-map" id="fwMapD">
+      <svg class="fw-svg" viewBox="0 0 1000 960" preserveAspectRatio="none">
+        <path id="glowPathD"/><path id="mainPathD"/>
+      </svg>
+      <div class="fw-node fw-node-1">01</div>
+      <div class="fw-node fw-node-2">02</div>
+      <div class="fw-node fw-node-3">03</div>
+      <div class="fw-node fw-node-4">04</div>
+      <div class="fw-step left fw-step-1" id="fwsd-1">
+        <div class="fw-card" id="fw-card-d1">
+          <div class="fw-ghost-num">01</div>
+          <div class="fw-stage-label">Foundations <span class="fw-tag">Most people begin here</span></div>
+          <div class="fw-card-title">Rebuild Trust in Your Body</div>
+          <div class="fw-card-desc">Strength, coordination, and awareness through clear, repeatable practice.</div>
+        </div>
+      </div>
+      <div class="fw-step right fw-step-2" id="fwsd-2">
+        <div class="fw-card" id="fw-card-d2">
+          <div class="fw-ghost-num">02</div>
+          <div class="fw-stage-label">Integration</div>
+          <div class="fw-card-title">Where the Unfamiliar Becomes Familiar</div>
+          <div class="fw-card-desc">Link strength and mobility into fluid, adaptable movement.</div>
+        </div>
+      </div>
+      <div class="fw-step left fw-step-3" id="fwsd-3">
+        <div class="fw-card" id="fw-card-d3">
+          <div class="fw-ghost-num">03</div>
+          <div class="fw-stage-label">Expression</div>
+          <div class="fw-card-title">Confidence Made Visible</div>
+          <div class="fw-card-desc">Capacity becomes adaptable. Movement becomes play.</div>
+        </div>
+      </div>
+      <div class="fw-step right fw-step-4" id="fwsd-4">
+        <div class="fw-card" id="fw-card-d4">
+          <div class="fw-ghost-num">04</div>
+          <div class="fw-stage-label">Stewardship</div>
+          <div class="fw-card-title">Carry the Culture Forward</div>
+          <div class="fw-card-desc">Sustain your practice and support the community around you.</div>
+        </div>
+      </div>
+    </div>
+    <div class="fw-footer" id="fwFooterD">
+      <p class="fw-note">You don't need prior experience to begin.<br>Only a willingness to practice consistently.</p>
+      <a href="#" class="fw-btn">Begin with Foundations</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── OPTION E HEADER ── -->
+<div class="option-header" id="label-e">
+  <span class="option-badge">Option E</span>
+  <p class="option-desc">Medium navy background with white cards. Depth and atmosphere with high readability. Dashed S-curve with blue glow.</p>
+  <div class="divider-line"></div>
+</div>
+
+<!-- ══ OPTION E ══ -->
+<div id="option-e">
+  <div class="fw-inner">
+    <div class="fw-header" id="fwHeaderE">
+      <p class="fw-eyebrow">The Practice Framework</p>
+      <h2 class="fw-title">A Structured Pathway for Long-Term Movement Practice</h2>
+      <p class="fw-sub">A clear developmental journey over time.</p>
+    </div>
+    <div class="fw-map" id="fwMapE">
+      <svg class="fw-svg" viewBox="0 0 1000 960" preserveAspectRatio="none">
+        <path id="glowPathE"/><path id="mainPathE"/>
+      </svg>
+      <div class="fw-node fw-node-1">01</div>
+      <div class="fw-node fw-node-2">02</div>
+      <div class="fw-node fw-node-3">03</div>
+      <div class="fw-node fw-node-4">04</div>
+      <div class="fw-step left fw-step-1" id="fwse-1">
+        <div class="fw-card" id="fw-card-e1">
+          <div class="fw-ghost-num">01</div>
+          <div class="fw-stage-label">Foundations <span class="fw-tag">Most people begin here</span></div>
+          <div class="fw-card-title">Rebuild Trust in Your Body</div>
+          <div class="fw-card-desc">Strength, coordination, and awareness through clear, repeatable practice.</div>
+        </div>
+      </div>
+      <div class="fw-step right fw-step-2" id="fwse-2">
+        <div class="fw-card" id="fw-card-e2">
+          <div class="fw-ghost-num">02</div>
+          <div class="fw-stage-label">Integration</div>
+          <div class="fw-card-title">Where the Unfamiliar Becomes Familiar</div>
+          <div class="fw-card-desc">Link strength and mobility into fluid, adaptable movement.</div>
+        </div>
+      </div>
+      <div class="fw-step left fw-step-3" id="fwse-3">
+        <div class="fw-card" id="fw-card-e3">
+          <div class="fw-ghost-num">03</div>
+          <div class="fw-stage-label">Expression</div>
+          <div class="fw-card-title">Confidence Made Visible</div>
+          <div class="fw-card-desc">Capacity becomes adaptable. Movement becomes play.</div>
+        </div>
+      </div>
+      <div class="fw-step right fw-step-4" id="fwse-4">
+        <div class="fw-card" id="fw-card-e4">
+          <div class="fw-ghost-num">04</div>
+          <div class="fw-stage-label">Stewardship</div>
+          <div class="fw-card-title">Carry the Culture Forward</div>
+          <div class="fw-card-desc">Sustain your practice and support the community around you.</div>
+        </div>
+      </div>
+    </div>
+    <div class="fw-footer" id="fwFooterE">
+      <p class="fw-note">You don't need prior experience to begin.<br>Only a willingness to practice consistently.</p>
+      <a href="#" class="fw-btn">Begin with Foundations</a>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Shared builder for D and E ──
+function buildDE(cfg) {
+  var glow = document.getElementById(cfg.glowId);
+  var main = document.getElementById(cfg.mainId);
+  var map  = document.getElementById(cfg.mapId);
+  if (!glow || !main || !map) return;
+
+  var CX = 500, SW = 210, nodeY = [128, 348, 578, 802];
+  var d = 'M ' + CX + ' ' + nodeY[0];
+  for (var i = 0; i < nodeY.length - 1; i++) {
+    var y0 = nodeY[i], y1 = nodeY[i+1], dir = (i%2===0)?1:-1, mid = (y0+y1)/2;
+    d += ' C '+(CX+SW*dir)+' '+(y0+(mid-y0)*0.55)+', '+(CX+SW*dir)+' '+(y1-(y1-mid)*0.55)+', '+CX+' '+y1;
+  }
+  glow.setAttribute('d', d); main.setAttribute('d', d);
+
+  var len = main.getTotalLength();
+  main.style.strokeDasharray  = len + ' ' + len;
+  main.style.strokeDashoffset = len;
+  glow.style.strokeDasharray  = len;
+  glow.style.strokeDashoffset = len;
+
+  var drawn = false;
+  function checkDraw() {
+    if (drawn) return;
+    if (map.getBoundingClientRect().top < window.innerHeight * 0.85) {
+      drawn = true;
+      var t = 'stroke-dashoffset 2.4s cubic-bezier(0.22,1,0.36,1)';
+      main.style.transition = glow.style.transition = t;
+      main.style.strokeDashoffset = glow.style.strokeDashoffset = '0';
+    }
+  }
+
+  var revEls = cfg.revIds.map(function(id) { return document.getElementById(id); });
+  var revDone = revEls.map(function() { return false; });
+  function checkReveal() {
+    revEls.forEach(function(el, i) {
+      if (revDone[i] || !el) return;
+      if (el.getBoundingClientRect().top < window.innerHeight * 0.88) {
+        revDone[i] = true;
+        setTimeout(function() { el.classList.add('in'); }, i * 80);
+      }
+    });
+  }
+
+  window.addEventListener('scroll', function() { checkDraw(); checkReveal(); }, { passive: true });
+  window.addEventListener('load',   function() { checkDraw(); checkReveal(); });
+
+  var section = document.getElementById(cfg.sectionId);
+  section.querySelectorAll('.fw-node').forEach(function(node, i) {
+    var card = document.getElementById(cfg.cardPrefix + (i+1));
+    if (!card) return;
+    function on()  { node.classList.add('active');    card.classList.add('active'); }
+    function off() { node.classList.remove('active'); card.classList.remove('active'); }
+    node.addEventListener('mouseenter', on); node.addEventListener('mouseleave', off);
+    card.addEventListener('mouseenter', on); card.addEventListener('mouseleave', off);
+  });
+}
+
+buildDE({
+  sectionId: 'option-d', glowId: 'glowPathD', mainId: 'mainPathD', mapId: 'fwMapD',
+  cardPrefix: 'fw-card-d', revIds: ['fwHeaderD','fwsd-1','fwsd-2','fwsd-3','fwsd-4','fwFooterD']
+});
+buildDE({
+  sectionId: 'option-e', glowId: 'glowPathE', mainId: 'mainPathE', mapId: 'fwMapE',
+  cardPrefix: 'fw-card-e', revIds: ['fwHeaderE','fwse-1','fwse-2','fwse-3','fwse-4','fwFooterE']
+});
+</script>
+</body>
+</html>
